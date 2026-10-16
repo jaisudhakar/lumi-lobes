@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getProduct, products, relatedProducts } from "@/lib/products";
+import { getProduct, products } from "@/lib/products";
 import ProductClient from "./ProductClient";
 
 export const dynamicParams = false;
@@ -18,7 +18,8 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 
 export default async function ProductPage({ params }: Params) {
   const { slug } = await params;
-  const product = getProduct(slug);
-  if (!product) notFound();
-  return <ProductClient product={product} related={relatedProducts(slug)} />;
+  if (!getProduct(slug)) notFound();
+  // The catalog is generated deterministically, so the client can look the product up itself
+  // instead of serialising it (and its artwork) into the page payload.
+  return <ProductClient slug={slug} />;
 }

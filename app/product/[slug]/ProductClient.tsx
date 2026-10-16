@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useCart, type Finish } from "@/components/CartProvider";
 import EarringSpinner from "@/components/EarringSpinner";
 import FloatingOrbs from "@/components/FloatingOrbs";
@@ -22,7 +22,8 @@ import { FeatureCard } from "@/components/ProductCards";
 import QuantityStepper from "@/components/QuantityStepper";
 import Reveal from "@/components/Reveal";
 import { flyToCart, sparkleBurst } from "@/lib/effects";
-import { formatPrice, type Product } from "@/lib/products";
+import { artUri, earringGeometry } from "@/lib/earringArt";
+import { formatPrice, getProduct, relatedProducts } from "@/lib/products";
 import styles from "./product.module.css";
 
 const finishes: { id: Finish; label: string; filter: string }[] = [
@@ -33,7 +34,9 @@ const finishes: { id: Finish; label: string; filter: string }[] = [
 
 const ZOOM_STEPS = [0.8, 1, 1.25, 1.5, 1.8];
 
-export default function ProductClient({ product, related }: { product: Product; related: Product[] }) {
+export default function ProductClient({ slug }: { slug: string }) {
+  const product = getProduct(slug)!;
+  const related = useMemo(() => relatedProducts(slug), [slug]);
   const { add, showToast } = useCart();
   const [finish, setFinish] = useState<Finish>("gold");
   const [qty, setQty] = useState(1);
@@ -41,7 +44,7 @@ export default function ProductClient({ product, related }: { product: Product; 
   const [added, setAdded] = useState(false);
   const [finishFlash, setFinishFlash] = useState(0);
   const stageRef = useRef<HTMLDivElement>(null);
-  const tryOnRef = useRef<HTMLButtonElement>(null);
+  const tryOnRef = useRef<HTMLAnchorElement>(null);
 
   // Reset when navigating between products (the component instance is reused).
   useEffect(() => {
@@ -51,7 +54,12 @@ export default function ProductClient({ product, related }: { product: Product; 
   }, [product.slug]);
 
   const current = finishes.find((f) => f.id === finish)!;
-  const viewImage = product.heroImage ?? product.image;
+  // Photos are re-tinted with a CSS filter; generated designs are simply redrawn in the chosen metal.
+  const viewImage = product.photo
+    ? (product.heroImage ?? product.image)
+    : artUri(product.design, { metal: finish, single: true });
+  const viewRatio = product.photo ? (product.viewRatio ?? 345 / 268) : earringGeometry(product.design.style).ratio;
+  const canTryOn = product.category !== "necklaces";
 
   const chooseFinish = (f: Finish) => {
     if (f === finish) return;
@@ -66,15 +74,10 @@ export default function ProductClient({ product, related }: { product: Product; 
     else el.requestFullscreen?.().catch(() => {});
   };
 
-  const onTryOn = () => {
-    sparkleBurst(tryOnRef.current, 12);
-    showToast("Virtual try-on is coming soon ✨");
-  };
-
   const onAdd = async () => {
     if (added) return;
     setAdded(true);
-    await flyToCart(stageRef.current, product.image);
+    await flyToCart(stageRef.current, product.photo ? product.image : artUri(product.design, { metal: finish }));
     add(product.slug, qty, finish);
     showToast(`${qty} × ${product.name} (${current.label}) added`);
     setTimeout(() => setAdded(false), 1800);
@@ -108,8 +111,8 @@ export default function ProductClient({ product, related }: { product: Product; 
                 key={product.slug}
                 src={viewImage}
                 alt={`${product.name} in ${current.label.toLowerCase()}`}
-                ratio={product.viewRatio ?? 345 / 268}
-                filter={current.filter}
+                ratio={viewRatio}
+                filter={product.photo ? current.filter : undefined}
                 zoom={ZOOM_STEPS[zoomIdx]}
               />
               {finishFlash > 0 && <span key={finishFlash} className={styles.finishFlash} aria-hidden />}
@@ -134,9 +137,16 @@ export default function ProductClient({ product, related }: { product: Product; 
             <span className={`${styles.stageChip} ${styles.dragChip}`}>
               <HandIcon size={22} /> Drag to rotate
             </span>
-            <button ref={tryOnRef} className={`${styles.stageChip} ${styles.tryOn}`} onClick={onTryOn}>
-              <CubeIcon size={22} /> Try on
-            </button>
+            {canTryOn && (
+              <Link
+                href={`/try-on/?p=${product.slug}&metal=${finish}`}
+                className={`${styles.stageChip} ${styles.tryOn}`}
+                onClick={() => sparkleBurst(tryOnRef.current, 12)}
+                ref={tryOnRef}
+              >
+                <CubeIcon size={22} /> Try on
+              </Link>
+            )}
           </div>
         </div>
 

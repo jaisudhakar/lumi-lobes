@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1000" width="900" height="1000">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f3ecff"/>
+      <stop offset="1" stop-color="#e2d4fb"/>
+    </linearGradient>
+    <radialGradient id="skin" cx=".45" cy=".4" r=".75">
+      <stop offset="0" stop-color="#fbe0d0"/>
+      <stop offset="1" stop-color="#eebda4"/>
+    </radialGradient>
+    <linearGradient id="hair" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6b3f35"/>
+      <stop offset="1" stop-color="#3e221e"/>
+    </linearGradient>
+    <linearGradient id="top" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#b9a2f3"/>
+      <stop offset="1" stop-color="#9a7ff0"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="900" height="1000" fill="url(#bg)"/>
+  <circle cx="140" cy="180" r="70" fill="#dcf4ec" opacity=".8"/>
+  <circle cx="790" cy="300" r="46" fill="#fee6dc"/>
+  <circle cx="760" cy="840" r="90" fill="#fde4ec" opacity=".8"/>
+
+  <!-- shoulders & neck -->
+  <path d="M120 1000C140 850 260 790 450 790S760 850 780 1000Z" fill="url(#top)"/>
+  <path d="M330 820Q450 900 570 820" fill="none" stroke="#fff" stroke-width="10" opacity=".35" stroke-linecap="round"/>
+  <path d="M385 640H515V800Q450 850 385 800Z" fill="#e9b39a"/>
+
+  <!-- hair behind head, with a high bun -->
+  <circle cx="450" cy="190" r="92" fill="url(#hair)"/>
+  <path d="M398 150Q450 112 502 150" fill="none" stroke="#8a564a" stroke-width="8" stroke-linecap="round" opacity=".6"/>
+  <ellipse cx="450" cy="430" rx="190" ry="215" fill="url(#hair)"/>
+
+  <!-- ears -->
+  <g fill="url(#skin)" stroke="#e2a68b" stroke-width="4">
+    <path d="M300 455C262 440 246 470 252 505 258 540 276 556 292 552L310 540Z"/>
+    <path d="M600 455C638 440 654 470 648 505 642 540 624 556 608 552L590 540Z"/>
+  </g>
+  <path d="M286 470C272 478 270 500 280 520" fill="none" stroke="#dc9c80" stroke-width="5" stroke-linecap="round"/>
+  <path d="M614 470C628 478 630 500 620 520" fill="none" stroke="#dc9c80" stroke-width="5" stroke-linecap="round"/>
+
+  <!-- face -->
+  <ellipse cx="450" cy="470" rx="158" ry="200" fill="url(#skin)"/>
+
+  <!-- hair pulled back, side part -->
+  <path d="M292 430C286 320 350 262 450 262 560 262 618 330 608 432 586 360 540 318 470 312 420 330 352 352 292 430Z" fill="url(#hair)"/>
+  <path d="M470 312C440 300 410 296 380 304" fill="none" stroke="#8a564a" stroke-width="6" stroke-linecap="round" opacity=".5"/>
+
+  <!-- brows, closed happy eyes, lashes -->
+  <g fill="none" stroke="#5a3530" stroke-linecap="round">
+    <path d="M362 418Q392 402 422 414" stroke-width="8"/>
+    <path d="M478 414Q508 402 538 418" stroke-width="8"/>
+    <path d="M366 470Q392 492 418 470" stroke-width="7"/>
+    <path d="M482 470Q508 492 534 470" stroke-width="7"/>
+    <path d="M368 472 358 466M534 472 544 466" stroke-width="5"/>
+  </g>
+
+  <!-- blush, nose, smile -->
+  <ellipse cx="364" cy="530" rx="34" ry="20" fill="#f6a5c0" opacity=".45"/>
+  <ellipse cx="536" cy="530" rx="34" ry="20" fill="#f6a5c0" opacity=".45"/>
+  <path d="M452 492Q462 528 442 540" fill="none" stroke="#d99a80" stroke-width="5" stroke-linecap="round"/>
+  <path d="M408 584Q450 616 492 584" fill="#c96a72" stroke="#b5565f" stroke-width="5" stroke-linejoin="round"/>
+  <path d="M420 590Q450 600 480 590" fill="none" stroke="#fff" stroke-width="5" opacity=".8"/>
+</svg>

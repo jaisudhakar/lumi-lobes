@@ -245,3 +245,11 @@
   color: #fff;
   animation: pop 0.5s var(--ease-spring);
 }
+
+/* Generated artwork is already transparent: no feathering, a little breathing room */
+.art {
+  object-fit: contain;
+  padding: 6%;
+  -webkit-mask-image: none;
+  mask-image: none;
+}

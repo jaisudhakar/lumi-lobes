@@ -4,6 +4,9 @@ import { FeatureCard } from "@/components/ProductCards";
 import Reveal from "@/components/Reveal";
 import { getProduct } from "@/lib/products";
 import HeroStage from "./HeroStage";
+import { Bestsellers, NewArrivals, Newsletter, Stats } from "./home/HomeInteractive";
+import { Faq, GiftGuide, homeData, SectionHead, StyleTiles, Testimonials, TryOnPromo } from "./home/HomeSections";
+import home from "./home/home.module.css";
 import styles from "./page.module.css";
 
 const featured = ["pearl-drop-earrings", "star-studs", "cherry-hoops", "lilac-butterfly-danglers"].map(
@@ -73,6 +76,41 @@ export default function Home() {
         </div>
       </section>
 
+      <section className={`container ${home.section}`}>
+        <SectionHead kicker="Find your fit" title="Shop by style" href="/shop/" cta="All designs" />
+        <StyleTiles />
+      </section>
+
+      <section className={`container ${home.section}`}>
+        <SectionHead kicker="Just landed" title="Fresh sparkle" href="/shop/?sort=new" />
+        <NewArrivals slugs={homeData.newArrivals} />
+      </section>
+
+      <section className={`container ${home.section}`}>
+        <TryOnPromo />
+      </section>
+
+      <section className={`container ${home.section}`}>
+        <SectionHead kicker="Most loved" title="Bestsellers by mood" href="/shop/?sort=rating" />
+        <Bestsellers byMood={homeData.bestByMood} />
+      </section>
+
+      <section className={`container ${home.section}`}>
+        <Stats items={homeData.stats} />
+      </section>
+
+      <section className={home.section}>
+        <div className="container">
+          <SectionHead kicker="Kind words" title="Little notes from happy ears" />
+        </div>
+        <Testimonials />
+      </section>
+
+      <section className={`container ${home.section}`}>
+        <SectionHead kicker="Gift guide" title="Sparkle for every budget" />
+        <GiftGuide />
+      </section>
+
       <section className={`container ${styles.perks}`}>
         {[
           { icon: <LeafIcon size={28} />, title: "Kind to ears", text: "Nickel-free, hypoallergenic posts on every pair.", tone: "mint" },
@@ -86,6 +124,23 @@ export default function Home() {
             <p className={styles.perkText}>{perk.text}</p>
           </Reveal>
         ))}
+      </section>
+
+      <section className={`container ${home.section}`}>
+        <div className={home.split}>
+          <div>
+            <SectionHead kicker="Questions" title="Good to know" />
+            <Faq />
+          </div>
+          <div className={home.club}>
+            <span className={home.clubSpark} aria-hidden>
+              ✦
+            </span>
+            <h2 className={home.clubTitle}>Join the Sparkle Club</h2>
+            <p className={home.clubText}>New drops, restocks and members-only treats, about twice a month. No spam, just sparkle.</p>
+            <Newsletter />
+          </div>
+        </div>
       </section>
     </div>
   );

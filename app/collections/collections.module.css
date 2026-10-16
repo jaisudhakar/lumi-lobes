@@ -119,6 +119,12 @@
   transition: transform 0.7s var(--ease-spring);
 }
 
+.art {
+  object-fit: contain;
+  padding: 10px;
+  background: linear-gradient(160deg, var(--tone), #fff);
+}
+
 .p0 {
   transform: translate(-50%, -50%) rotate(-10deg) translateX(-14%);
 }

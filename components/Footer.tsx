@@ -14,6 +14,7 @@ export default function Footer() {
         <nav className={styles.links} aria-label="Footer">
           <Link href="/shop/">Shop</Link>
           <Link href="/collections/">Collections</Link>
+          <Link href="/try-on/">Try-On</Link>
           <Link href="/cart/">Cart</Link>
         </nav>
         <p className={styles.copy}>© {new Date().getFullYear()} Lumi Lobes · Made with sparkle</p>

@@ -17,7 +17,7 @@ export function FeatureCard({ product, size = "md" }: { product: Product; size?:
     >
       <div className={styles.featureMedia}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={product.image} alt={product.name} loading="lazy" className={styles.featureImg} />
+        <img src={product.image} alt={product.name} loading="lazy" className={`${styles.featureImg} ${product.photo ? "" : styles.art}`} />
       </div>
       <div className={styles.featureBody}>
         <h3 className={styles.featureName}>{product.name}</h3>
@@ -61,7 +61,7 @@ export function ShopCard({ product, index = 0 }: { product: Product; index?: num
       <Link href={`/product/${product.slug}/`} className={styles.shopLink} aria-label={product.name} />
       <div className={styles.shopMedia} ref={mediaRef}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={product.image} alt="" loading="lazy" className={styles.shopImg} />
+        <img src={product.image} alt="" loading="lazy" className={`${styles.shopImg} ${product.photo ? "" : styles.art}`} />
         {product.isNew && <span className={styles.newTag}>New</span>}
       </div>
 

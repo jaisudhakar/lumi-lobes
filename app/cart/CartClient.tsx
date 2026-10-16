@@ -18,6 +18,7 @@ import { FeatureCard } from "@/components/ProductCards";
 import QuantityStepper from "@/components/QuantityStepper";
 import Reveal from "@/components/Reveal";
 import { sparkleBurst } from "@/lib/effects";
+import { artUri } from "@/lib/earringArt";
 import { formatPrice, getProduct, giftBox } from "@/lib/products";
 import styles from "./cart.module.css";
 
@@ -100,7 +101,7 @@ export default function CartClient() {
                   <div className={styles.itemInner}>
                     <Link href={`/product/${p.slug}/`} className={`${styles.thumb} tone-${p.tone}`}>
                       {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={p.image} alt={p.name} />
+                      <img src={p.photo ? p.image : artUri(p.design, { metal: l.finish })} alt={p.name} className={p.photo ? "" : styles.art} />
                     </Link>
                     <div className={styles.meta}>
                       <Link href={`/product/${p.slug}/`} className={styles.itemName}>
