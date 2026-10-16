@@ -1,0 +1,40 @@
+# Lumi Lobes: Apache settings for cPanel / shared hosting (e.g. GoDaddy).
+# Copied into the build output, so it lands in public_html with the site.
+
+Options -Indexes
+DirectoryIndex index.html
+ErrorDocument 404 /404.html
+
+# Always serve over HTTPS (the camera try-on only works on secure pages).
+# Make sure the domain has an SSL certificate first (cPanel > SSL/TLS Status).
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{HTTPS} !=on
+  RewriteCond %{HTTP:X-Forwarded-Proto} !https
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>
+
+# File types Apache may not know about
+AddType application/wasm .wasm
+AddType image/svg+xml .svg
+AddType image/webp .webp
+
+# Compress text-based files
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/css application/javascript text/javascript application/json image/svg+xml application/wasm
+</IfModule>
+
+# Browser caching: build assets never change name-for-content, pages revalidate
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresDefault "access plus 1 hour"
+  ExpiresByType text/html "access plus 0 seconds"
+  ExpiresByType text/css "access plus 1 year"
+  ExpiresByType application/javascript "access plus 1 year"
+  ExpiresByType text/javascript "access plus 1 year"
+  ExpiresByType image/svg+xml "access plus 1 week"
+  ExpiresByType image/webp "access plus 1 month"
+  ExpiresByType image/jpeg "access plus 1 month"
+  ExpiresByType application/wasm "access plus 1 week"
+  ExpiresByType font/woff2 "access plus 1 year"
+</IfModule>
