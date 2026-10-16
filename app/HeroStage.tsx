@@ -5,6 +5,7 @@ import EarringSpinner from "@/components/EarringSpinner";
 import FloatingOrbs from "@/components/FloatingOrbs";
 import { HandIcon } from "@/components/Icons";
 import styles from "./page.module.css";
+import { asset } from "@/lib/basePath";
 
 /** Right-hand side of the hero: spinnable earring, orbit ring and floating orbs with pointer parallax. */
 export default function HeroStage() {
@@ -49,7 +50,7 @@ export default function HeroStage() {
 
       <div className={styles.earring}>
         <EarringSpinner
-          src="/images/products/pearl-drop-hero.webp"
+          src={asset("/images/products/pearl-drop-hero.webp")}
           alt="Pearl Drop Earring with a crystal flower"
           ratio={270 / 465}
           onFirstSpin={() => setHintGone(true)}

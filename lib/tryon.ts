@@ -2,6 +2,7 @@
 // where the ear lobes are from the 478-point face mesh, and draws earrings
 // there with a little pendulum physics so dangly styles swing as you move.
 
+import { asset } from "./basePath";
 import type { FaceLandmarker, NormalizedLandmark } from "@mediapipe/tasks-vision";
 import type { StyleId } from "./design";
 
@@ -10,7 +11,7 @@ export const FACE_MODEL_URL =
   "https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task";
 
 /** WebAssembly runtime, copied from node_modules into public/ by scripts/copy-mediapipe.mjs. */
-export const WASM_BASE = "/mediapipe/wasm";
+export const WASM_BASE = asset("/mediapipe/wasm");
 
 let landmarker: Promise<FaceLandmarker> | null = null;
 

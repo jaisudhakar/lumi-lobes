@@ -3,7 +3,8 @@ on:
   workflow_dispatch:
 
 env:
-  # The folder on your server where the site will live (https://onemandeveloper.com/sites/lumi/)
+  # The folder on your server where the site will live (https://onemandeveloper.com/sites/lumi/).
+  # The build reads this directly (next.config.ts + lib/basePath.ts); leave empty for a domain root.
   BASE_PATH: /sites/lumi
 
 jobs:
@@ -17,50 +18,10 @@ jobs:
           node-version: 22
           cache: npm
 
-      - name: Set the site folder path
-        run: |
-          cat > patch-base.mjs <<'EOF'
-          import { readFileSync, writeFileSync } from "node:fs";
-          const BASE = process.env.BASE_PATH;
-          if (!BASE) throw new Error("BASE_PATH is not set");
-          const edits = [
-            ["next.config.ts", 'output: "export",', `output: "export",\n  basePath: "${BASE}",`],
-            ["app/HeroStage.tsx", 'src="/images/', `src="${BASE}/images/`],
-            ["lib/catalog.ts", "image: `/art/", "image: `" + BASE + "/art/"],
-            ["lib/author.ts", 'photo: "/about/', `photo: "${BASE}/about/`],
-            ["lib/tryon.ts", 'WASM_BASE = "/mediapipe/wasm"', `WASM_BASE = "${BASE}/mediapipe/wasm"`],
-            ["lib/sampleModels.ts", 'src: "/try-on/', `src: "${BASE}/try-on/`],
-            ["lib/products.ts", "=> `/images/products/", "=> `" + BASE + "/images/products/"],
-          ];
-          for (const [file, from, to] of edits) {
-            const text = readFileSync(file, "utf8");
-            if (!text.includes(from)) throw new Error(`Pattern not found in ${file}: ${from}`);
-            writeFileSync(file, text.split(from).join(to));
-            console.log("patched", file);
-          }
-          EOF
-          node patch-base.mjs
-
       - run: npm ci
+
+      # Also writes out/.htaccess (HTTPS, 404 page, .wasm type, compression, caching)
       - run: npm run build
-
-      - name: Add .htaccess for cPanel
-        run: |
-          cat > out/.htaccess <<EOF
-          RewriteEngine On
-          RewriteCond %{HTTPS} off
-          RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
-
-          ErrorDocument 404 ${BASE_PATH}/404.html
-
-          <IfModule mod_expires.c>
-            ExpiresActive On
-            ExpiresByType image/webp "access plus 30 days"
-            ExpiresByType image/svg+xml "access plus 7 days"
-            ExpiresByType text/css "access plus 1 year"
-            ExpiresByType application/javascript "access plus 1 year"
-          </IfModule>
-          EOF
 
       - uses: actions/upload-artifact@v4
         with:

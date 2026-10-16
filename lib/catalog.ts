@@ -1,6 +1,7 @@
 // Generates the extended catalog: every compatible style × motif × colourway,
 // shuffled with a fixed seed so the server build and the browser agree exactly.
 
+import { asset } from "./basePath";
 import {
   MOTIFS,
   PALETTES,
@@ -148,7 +149,7 @@ export function generateCatalog(reserved: Set<string>, startRank: number): Produ
       category: style.category,
       tone: pal.tone,
       // Pre-rendered at build time by app/art/[file]/route.ts.
-      image: `/art/${slug}.svg`,
+      image: asset(`/art/${slug}.svg`),
       design,
       mood: motif.mood,
       rating: Math.round((4.3 + r() * 0.7) * 10) / 10,

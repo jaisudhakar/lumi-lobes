@@ -8,6 +8,7 @@
     "dev": "next dev",
     "prebuild": "node scripts/copy-mediapipe.mjs",
     "build": "next build",
+    "postbuild": "node scripts/write-htaccess.mjs",
     "start": "npx serve@latest out",
     "lint": "tsc --noEmit"
   },

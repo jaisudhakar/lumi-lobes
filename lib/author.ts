@@ -1,10 +1,12 @@
 // Details for the "Who built this" section on the homepage.
 // Any link left as "" is hidden on the site, so fill these in as you have them.
 
+import { asset } from "./basePath";
+
 export const author = {
   name: "Sudhakar Arunachalam",
   shortName: "Sudhakar",
-  photo: "/about/sudhakar.webp",
+  photo: asset("/about/sudhakar.webp"),
   role: "Full-stack eCommerce developer · Shopify Partner",
   location: "Coimbatore, India",
   availability: "open to freelance work",

@@ -1,3 +1,4 @@
+import { asset } from "./basePath";
 import type { Ear } from "./tryon";
 
 export type SampleModel = {
@@ -18,7 +19,7 @@ export type SampleModel = {
 
 /** Default try-on model (photo used with the model's permission). */
 export const PHOTO_MODEL: SampleModel = {
-  src: "/try-on/model.jpg",
+  src: asset("/try-on/model.jpg"),
   w: 415,
   h: 739,
   alt: "Sample model",
@@ -32,7 +33,7 @@ export const PHOTO_MODEL: SampleModel = {
 
 /** Illustrated fallback, used if the photo fails to load. */
 export const ILLUSTRATED_MODEL: SampleModel = {
-  src: "/try-on/sample-model.svg",
+  src: asset("/try-on/sample-model.svg"),
   w: 900,
   h: 1000,
   alt: "Illustrated sample model",

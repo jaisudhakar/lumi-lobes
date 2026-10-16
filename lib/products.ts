@@ -1,10 +1,11 @@
+import { asset } from "./basePath";
 import { generateCatalog, type Product } from "./catalog";
 import { STYLES, type Category } from "./design";
 
 export type { Product } from "./catalog";
 export type { Category, Tone } from "./design";
 
-const img = (name: string) => `/images/products/${name}.webp`;
+const img = (name: string) => asset(`/images/products/${name}.webp`);
 
 const originals: Product[] = [
   {

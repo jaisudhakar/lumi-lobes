@@ -15,6 +15,21 @@ npm start        # serve ./out locally
 
 `predev`/`prebuild` run `scripts/copy-mediapipe.mjs`, which copies the MediaPipe WebAssembly runtime from `node_modules` into `public/mediapipe/` (git-ignored) for the virtual try-on.
 
+## Deploying to GoDaddy (cPanel) or any Apache host
+
+The site is plain static files, so any shared hosting works. `npm run build` also writes `out/.htaccess` (HTTPS redirect, 404 page, `.wasm` file type, compression, caching).
+
+**Root of a domain** (e.g. `https://lumilobes.com/`): build with `npm run build` and upload into `public_html`.
+
+**Sub-folder** (e.g. `https://onemandeveloper.com/sites/lumi/`): build with `BASE_PATH=/sites/lumi npm run build` and upload into `public_html/sites/lumi`. The **Build static site** GitHub Action (`.github/workflows/build.yml`, run it from the Actions tab) does this build for you and attaches the `out` folder as a downloadable artifact.
+
+Uploading with cPanel:
+
+1. Make sure the domain has SSL: **cPanel → SSL/TLS Status → Run AutoSSL**. The camera try-on needs HTTPS, and `.htaccess` redirects all traffic to it.
+2. **cPanel → File Manager**, open the target folder (create `sites/lumi` inside `public_html` if needed). Back up and remove any old files there.
+3. **Upload** a zip of the contents of `out/`, right-click it → **Extract**, then delete the zip. `index.html` and `.htaccess` must sit directly in the target folder. (Turn on "Show Hidden Files" in File Manager settings to see `.htaccess`.)
+4. Visit the URL. To update later, rebuild and repeat steps 2–3.
+
 ## Pages
 
 | Route | What's there |
