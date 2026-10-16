@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowRight, GiftIcon, HeartIcon, LeafIcon, TruckIcon } from "@/components/Icons";
+import BuiltBy from "@/components/BuiltBy";
 import { FeatureCard } from "@/components/ProductCards";
 import Reveal from "@/components/Reveal";
 import { getProduct } from "@/lib/products";
@@ -142,6 +143,8 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <BuiltBy />
     </div>
   );
 }
