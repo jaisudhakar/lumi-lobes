@@ -1,0 +1,210 @@
+.shop {
+  padding-top: 12px;
+}
+
+.toolbar {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+/* ---------- Filter chips with a sliding active pill ---------- */
+
+.chips {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.chipPill {
+  position: absolute;
+  height: 50px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #b39af5, var(--purple));
+  box-shadow: 0 10px 22px rgba(140, 105, 235, 0.35);
+  transition:
+    left 0.5s var(--ease-spring),
+    top 0.5s var(--ease-spring),
+    width 0.5s var(--ease-spring);
+}
+
+.chip {
+  position: relative;
+  z-index: 1;
+  height: 50px;
+  padding: 0 28px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  background: #fff;
+  box-shadow: var(--shadow-sm);
+  transition:
+    color 0.3s,
+    background 0.3s,
+    transform 0.3s var(--ease-spring);
+}
+
+.chip:hover {
+  transform: translateY(-2px);
+}
+
+.chipActive {
+  color: #fff;
+  background: transparent;
+  box-shadow: none;
+}
+
+/* ---------- Sort dropdown ---------- */
+
+.sort {
+  position: relative;
+}
+
+.sortBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  height: 52px;
+  padding: 0 22px 0 26px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  background: #fff;
+  box-shadow: var(--shadow-sm);
+}
+
+.chev {
+  transition: transform 0.35s var(--ease-spring);
+}
+
+.chevOpen {
+  transform: rotate(180deg);
+}
+
+.sortMenu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 10px);
+  min-width: 230px;
+  margin: 0;
+  padding: 8px;
+  list-style: none;
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: var(--shadow-lg);
+  opacity: 0;
+  transform: translateY(-8px) scale(0.96);
+  transform-origin: top right;
+  pointer-events: none;
+  transition:
+    opacity 0.2s,
+    transform 0.35s var(--ease-spring);
+}
+
+.sortMenuOpen {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+
+.sortOption {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 12px;
+  text-align: left;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.sortOption:hover {
+  background: var(--purple-soft);
+}
+
+.sortOptionActive {
+  color: var(--purple-strong);
+  font-weight: 800;
+}
+
+/* ---------- Grid ---------- */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.empty {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  max-width: 520px;
+  margin: 40px auto 0;
+  padding: 48px 32px;
+  text-align: center;
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  animation: fadeUp 0.6s var(--ease-out) both;
+}
+
+.empty h2 {
+  font-size: 2rem;
+}
+
+.empty p {
+  color: var(--ink-soft);
+  line-height: 1.55;
+  margin-bottom: 10px;
+}
+
+.emptyIcon {
+  font-size: 3rem;
+  color: var(--purple);
+  animation: twinkleSlow 2.4s ease-in-out infinite;
+}
+
+@keyframes twinkleSlow {
+  0%,
+  100% {
+    transform: scale(0.8) rotate(0deg);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scale(1.15) rotate(90deg);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 1100px) {
+  .grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 820px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .chips {
+    gap: 10px;
+  }
+
+  .chip {
+    padding: 0 20px;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

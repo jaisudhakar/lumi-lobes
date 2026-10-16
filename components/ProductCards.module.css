@@ -1,0 +1,247 @@
+/* ==========================================================================
+   Feature card (horizontal)
+   ========================================================================== */
+
+.feature {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  align-items: center;
+  min-height: 240px;
+  padding: 18px 18px 18px 10px;
+  border-radius: var(--radius);
+  background: linear-gradient(140deg, var(--tone) 0%, color-mix(in srgb, var(--tone) 55%, #fff) 100%);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  isolation: isolate;
+  transition:
+    transform 0.5s var(--ease-spring),
+    box-shadow 0.4s var(--ease-out);
+}
+
+.featureSm {
+  min-height: 190px;
+}
+
+.feature:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-lg);
+}
+
+.featureMedia {
+  height: 100%;
+  display: grid;
+  place-items: center;
+}
+
+.featureImg {
+  width: 100%;
+  max-height: 210px;
+  object-fit: contain;
+  transform-origin: 50% 10%;
+  -webkit-mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 70%, transparent 100%);
+  mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 70%, transparent 100%);
+  transition: transform 0.6s var(--ease-out);
+}
+
+/* Earrings swing on hover, as if just picked up */
+.feature:hover .featureImg {
+  animation: swing 1.2s var(--ease-out);
+  transform: scale(1.06);
+}
+
+.featureBody {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-left: 6px;
+}
+
+.featureName {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 1.1rem;
+  line-height: 1.25;
+}
+
+.featurePrice {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.6rem;
+}
+
+.featureArrow {
+  margin-top: 18px;
+  background: var(--tone-strong);
+}
+
+.feature:hover .featureArrow {
+  transform: translateX(8px) scale(1.08);
+  background: #fff;
+}
+
+/* One-off glossy sheen that sweeps across the card on hover */
+.shine {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(115deg, transparent 30%, rgba(255, 255, 255, 0.6) 50%, transparent 70%);
+  transform: translateX(-110%);
+  pointer-events: none;
+}
+
+.feature:hover .shine {
+  transition: transform 0.9s var(--ease-out);
+  transform: translateX(110%);
+}
+
+/* ==========================================================================
+   Shop card (vertical)
+   ========================================================================== */
+
+.shop {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--radius);
+  background: linear-gradient(170deg, var(--tone) 0%, color-mix(in srgb, var(--tone) 60%, #fff) 100%);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  animation: fadeUp 0.7s var(--ease-out) both;
+  transition:
+    transform 0.5s var(--ease-spring),
+    box-shadow 0.4s var(--ease-out);
+}
+
+.shop:hover {
+  transform: translateY(-10px) rotate(-0.4deg);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Whole card is clickable; buttons sit above this overlay */
+.shopLink {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+}
+
+.shopMedia {
+  position: relative;
+  aspect-ratio: 345 / 268;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+.shopImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform-origin: 50% 15%;
+  -webkit-mask-image: radial-gradient(ellipse 55% 55% at 50% 50%, #000 72%, transparent 100%);
+  mask-image: radial-gradient(ellipse 55% 55% at 50% 50%, #000 72%, transparent 100%);
+  transition: transform 0.7s var(--ease-out);
+}
+
+.shop:hover .shopImg {
+  transform: scale(1.08);
+  animation: swing 1.3s var(--ease-out);
+}
+
+.newTag {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #fff;
+  background: linear-gradient(135deg, var(--heart), #f39bb6);
+  box-shadow: 0 6px 14px rgba(240, 150, 140, 0.4);
+}
+
+.like {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  color: var(--ink);
+  transition:
+    transform 0.3s var(--ease-spring),
+    background 0.2s,
+    color 0.2s;
+}
+
+.like:hover {
+  background: rgba(255, 255, 255, 0.7);
+  transform: scale(1.1);
+}
+
+.liked {
+  color: #f07c9b;
+  animation: pop 0.5s var(--ease-spring);
+}
+
+.shopFooter {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 18px 20px 22px;
+}
+
+.shopName {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 1.15rem;
+  line-height: 1.3;
+}
+
+.shopPrice {
+  margin-top: 4px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.55rem;
+}
+
+.addBtn {
+  position: relative;
+  z-index: 2;
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  color: var(--ink);
+  background: color-mix(in srgb, var(--purple-soft) 75%, var(--purple) 25%);
+  transition:
+    transform 0.35s var(--ease-spring),
+    background 0.25s,
+    color 0.25s;
+}
+
+.addBtn:hover {
+  transform: scale(1.1) rotate(-8deg);
+  background: var(--purple);
+  color: #fff;
+}
+
+.addBtn:active {
+  transform: scale(0.9);
+}
+
+.addBtnDone {
+  background: var(--green);
+  color: #fff;
+  animation: pop 0.5s var(--ease-spring);
+}

@@ -1,0 +1,243 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  transition:
+    background 0.3s,
+    box-shadow 0.3s,
+    backdrop-filter 0.3s;
+}
+
+.scrolled {
+  background: rgba(247, 242, 255, 0.75);
+  backdrop-filter: blur(14px) saturate(1.4);
+  -webkit-backdrop-filter: blur(14px) saturate(1.4);
+  box-shadow: 0 6px 24px rgba(110, 80, 190, 0.08);
+}
+
+.inner {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  height: 104px;
+  transition: height 0.3s var(--ease-out);
+}
+
+.scrolled .inner {
+  height: 84px;
+}
+
+/* ---------- Logo ---------- */
+
+.logo {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  margin-left: clamp(0px, 2vw, 36px);
+}
+
+.wordmark {
+  position: relative;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 2.35rem;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: var(--ink);
+}
+
+.logoHeart {
+  position: absolute;
+  top: -6px;
+  right: -20px;
+  font-size: 1.1rem;
+  color: var(--heart);
+  animation: heartbeat 2.4s ease-in-out infinite;
+}
+
+.tagline {
+  margin-top: 8px;
+  font-size: 0.62rem;
+  line-height: 1.45;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--ink-soft);
+  padding-left: 0.42em;
+}
+
+.logo:hover .logoHeart {
+  animation-duration: 0.9s;
+}
+
+/* ---------- Nav ---------- */
+
+.nav {
+  margin-left: auto;
+}
+
+.links {
+  position: relative;
+  display: flex;
+  gap: 6px;
+}
+
+.pill {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #b39af5, var(--purple));
+  box-shadow: 0 8px 20px rgba(140, 105, 235, 0.35);
+  transition:
+    left 0.5s var(--ease-spring),
+    width 0.5s var(--ease-spring);
+}
+
+.link {
+  position: relative;
+  z-index: 1;
+  padding: 12px 30px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--ink);
+  transition: color 0.3s;
+}
+
+.link:not(.active):hover {
+  color: var(--purple-strong);
+}
+
+.active {
+  color: #fff;
+}
+
+/* ---------- Bag ---------- */
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.bag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 48px;
+  padding: 0 10px 0 16px;
+  border-radius: 999px;
+  background: var(--purple-soft);
+  color: var(--ink);
+  transition: transform 0.3s var(--ease-spring);
+}
+
+.bag:hover {
+  transform: translateY(-2px);
+}
+
+.bump {
+  animation: bagBump 0.65s var(--ease-spring);
+}
+
+.badge {
+  display: grid;
+  place-items: center;
+  min-width: 26px;
+  height: 26px;
+  padding: 0 6px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #fff;
+  background: var(--purple);
+  animation: pop 0.45s var(--ease-spring);
+}
+
+@keyframes bagBump {
+  0% {
+    transform: scale(1) rotate(0);
+  }
+  30% {
+    transform: scale(1.18) rotate(-8deg);
+  }
+  55% {
+    transform: scale(0.94) rotate(5deg);
+  }
+  100% {
+    transform: scale(1) rotate(0);
+  }
+}
+
+.menuBtn {
+  display: none;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  place-items: center;
+  background: #fff;
+  box-shadow: var(--shadow-sm);
+}
+
+@media (max-width: 860px) {
+  .inner {
+    height: 84px;
+  }
+
+  .wordmark {
+    font-size: 1.8rem;
+  }
+
+  .tagline {
+    font-size: 0.5rem;
+  }
+
+  .actions {
+    margin-left: auto;
+  }
+
+  .menuBtn {
+    display: grid;
+  }
+
+  .nav {
+    position: absolute;
+    top: 100%;
+    left: var(--gutter);
+    right: var(--gutter);
+    padding: 10px;
+    border-radius: var(--radius);
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: var(--shadow-lg);
+    opacity: 0;
+    transform: translateY(-10px) scale(0.98);
+    pointer-events: none;
+    transition:
+      opacity 0.25s,
+      transform 0.35s var(--ease-out);
+  }
+
+  .open {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+  }
+
+  .links {
+    flex-direction: column;
+  }
+
+  .pill {
+    display: none;
+  }
+
+  .link {
+    padding: 14px 18px;
+  }
+
+  .active {
+    color: #fff;
+    background: var(--purple);
+  }
+}

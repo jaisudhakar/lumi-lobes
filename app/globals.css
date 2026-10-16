@@ -1,0 +1,439 @@
+/* ==========================================================================
+   Lumi Lobes — design tokens, base styles, shared UI and keyframes
+   ========================================================================== */
+
+:root {
+  --ink: #26135f;
+  --ink-soft: #4d4675;
+  --muted: #8a84a8;
+  --line: rgba(120, 100, 190, 0.12);
+
+  --bg: #f5f0fd;
+  --surface: rgba(255, 255, 255, 0.78);
+  --surface-solid: #fbf9ff;
+
+  --purple: #a283f0;
+  --purple-strong: #8a66ea;
+  --purple-soft: #ebe3fd;
+  --heart: #f8b59c;
+  --green: #4fc7a4;
+  --gold: #e5b54a;
+
+  --pink: #fde4ec;
+  --mint: #dcf4ec;
+  --peach: #fee6dc;
+  --lilac: #ece4fc;
+
+  --radius-sm: 14px;
+  --radius: 24px;
+  --radius-lg: 32px;
+
+  --shadow-sm: 0 4px 14px rgba(110, 80, 190, 0.08);
+  --shadow: 0 14px 40px rgba(110, 80, 190, 0.12);
+  --shadow-lg: 0 24px 60px rgba(110, 80, 190, 0.2);
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  --font-display: var(--font-fredoka), "Fredoka", ui-rounded, system-ui, sans-serif;
+  --font-body: var(--font-nunito), "Nunito", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --container: 1440px;
+  --gutter: clamp(16px, 4vw, 48px);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: var(--font-body);
+  color: var(--ink);
+  background:
+    radial-gradient(1200px 600px at 85% -10%, #efe4ff 0%, transparent 60%),
+    radial-gradient(900px 500px at -10% 30%, #fbe8f1 0%, transparent 60%),
+    radial-gradient(900px 600px at 100% 90%, #e5f6f0 0%, transparent 60%),
+    var(--bg);
+  background-attachment: fixed;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  border: 0;
+  background: none;
+  padding: 0;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+}
+
+p {
+  margin: 0;
+}
+
+:focus-visible {
+  outline: 3px solid var(--purple);
+  outline-offset: 3px;
+  border-radius: 12px;
+}
+
+::selection {
+  background: var(--purple-soft);
+}
+
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ---------- Buttons ---------- */
+
+.btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  height: 64px;
+  padding: 0 40px;
+  border-radius: 999px;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 1.35rem;
+  color: #fff;
+  background: linear-gradient(135deg, #b39af5 0%, var(--purple) 50%, #9474ee 100%);
+  box-shadow:
+    0 12px 28px rgba(140, 105, 235, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  overflow: hidden;
+  isolation: isolate;
+  transition:
+    transform 0.35s var(--ease-spring),
+    box-shadow 0.35s var(--ease-out);
+}
+
+/* Glossy light sweep across primary buttons */
+.btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, 0.45) 50%, transparent 70%);
+  transform: translateX(-120%);
+  animation: shimmer 3.6s ease-in-out infinite;
+}
+
+.btn:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow:
+    0 18px 36px rgba(140, 105, 235, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.btn:active {
+  transform: translateY(0) scale(0.97);
+}
+
+.btn svg {
+  transition: transform 0.35s var(--ease-spring);
+}
+
+.btn:hover svg {
+  transform: translateX(4px);
+}
+
+.btn-block {
+  width: 100%;
+}
+
+.icon-btn {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: #fff;
+  color: var(--ink);
+  box-shadow: var(--shadow-sm);
+  transition:
+    transform 0.3s var(--ease-spring),
+    background 0.2s;
+}
+
+.icon-btn:hover {
+  transform: scale(1.08);
+  background: var(--purple-soft);
+}
+
+.icon-btn:active {
+  transform: scale(0.92);
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  background: var(--purple-soft);
+  color: var(--ink);
+}
+
+/* Round "go" button used on product cards */
+.round-arrow {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  color: var(--ink);
+  transition:
+    transform 0.35s var(--ease-spring),
+    background 0.2s;
+}
+
+.tone-pink {
+  --tone: var(--pink);
+  --tone-strong: #f6c7d6;
+}
+.tone-mint {
+  --tone: var(--mint);
+  --tone-strong: #b5e7d7;
+}
+.tone-peach {
+  --tone: var(--peach);
+  --tone-strong: #f9cdbb;
+}
+.tone-lilac {
+  --tone: var(--lilac);
+  --tone-strong: #d6c6f8;
+}
+
+/* ---------- Scroll reveal ---------- */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(28px) scale(0.98);
+  transition:
+    opacity 0.8s var(--ease-out),
+    transform 0.8s var(--ease-out);
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------- Page transition ---------- */
+
+.page-enter {
+  animation: pageIn 0.7s var(--ease-out) both;
+}
+
+/* ---------- Keyframes ---------- */
+
+@keyframes pageIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes shimmer {
+  0%,
+  55% {
+    transform: translateX(-120%);
+  }
+  100% {
+    transform: translateX(120%);
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -18px, 0);
+  }
+}
+
+@keyframes floatAlt {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  33% {
+    transform: translate3d(10px, -14px, 0) rotate(6deg);
+  }
+  66% {
+    transform: translate3d(-8px, 8px, 0) rotate(-4deg);
+  }
+}
+
+/* Gentle pendulum, like an earring catching a breeze */
+@keyframes sway {
+  0%,
+  100% {
+    transform: rotate(-4deg);
+  }
+  50% {
+    transform: rotate(4deg);
+  }
+}
+
+@keyframes swing {
+  0% {
+    transform: rotate(0);
+  }
+  20% {
+    transform: rotate(9deg);
+  }
+  40% {
+    transform: rotate(-7deg);
+  }
+  60% {
+    transform: rotate(4deg);
+  }
+  80% {
+    transform: rotate(-2deg);
+  }
+  100% {
+    transform: rotate(0);
+  }
+}
+
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0;
+    transform: scale(0.3) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1) rotate(90deg);
+  }
+}
+
+@keyframes heartbeat {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  15% {
+    transform: scale(1.18);
+  }
+  30% {
+    transform: scale(0.96);
+  }
+  45% {
+    transform: scale(1.1);
+  }
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.45);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes toastIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 24px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}

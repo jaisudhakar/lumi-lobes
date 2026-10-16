@@ -1,0 +1,101 @@
+.footer {
+  margin-top: 96px;
+  border-top: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.45);
+}
+
+.inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding-block: 40px;
+}
+
+.brand {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.5rem;
+}
+
+.brand span {
+  color: var(--heart);
+}
+
+.note {
+  margin-top: 6px;
+  color: var(--ink-soft);
+}
+
+.links {
+  display: flex;
+  gap: 28px;
+  font-weight: 700;
+}
+
+.links a {
+  position: relative;
+}
+
+.links a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -4px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--purple);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.35s var(--ease-out);
+}
+
+.links a:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+.copy {
+  width: 100%;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+/* ---------- Toast ---------- */
+
+.toastRegion {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 28px;
+  z-index: 200;
+  pointer-events: none;
+}
+
+.toast {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 22px;
+  border-radius: 999px;
+  font-weight: 700;
+  white-space: nowrap;
+  color: #fff;
+  background: var(--ink);
+  box-shadow: var(--shadow-lg);
+  animation: toastIn 0.45s var(--ease-spring) both;
+}
+
+.toastIcon {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--green);
+}

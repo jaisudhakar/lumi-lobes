@@ -1,0 +1,481 @@
+.page {
+  padding-top: 8px;
+}
+
+.top {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+  gap: 40px;
+  align-items: start;
+}
+
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 6px 18px;
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: var(--ink);
+  transition: gap 0.3s var(--ease-spring);
+}
+
+.back:hover {
+  gap: 16px;
+}
+
+/* ==========================================================================
+   Viewer stage
+   ========================================================================== */
+
+.stage {
+  position: relative;
+  height: 585px;
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(70% 60% at 50% 40%, rgba(255, 255, 255, 0.75), transparent 70%),
+    linear-gradient(160deg, var(--tone) 0%, color-mix(in srgb, var(--tone) 70%, #c9b6f6) 100%);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  animation: stageIn 0.9s var(--ease-out) both;
+}
+
+.stageHero {
+  background:
+    radial-gradient(70% 60% at 50% 40%, rgba(255, 255, 255, 0.5), transparent 70%),
+    linear-gradient(160deg, #efe6fd 0%, #dccbf6 100%);
+}
+
+.stage:fullscreen {
+  height: 100vh;
+  border-radius: 0;
+}
+
+@keyframes stageIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+    clip-path: inset(6% 6% 6% 6% round 32px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    clip-path: inset(0 0 0 0 round 32px);
+  }
+}
+
+/* Soft round podium the earring floats above */
+.podium {
+  position: absolute;
+  left: 50%;
+  bottom: 6%;
+  width: 62%;
+  height: 22%;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(60% 70% at 50% 35%, rgba(255, 255, 255, 0.95), rgba(235, 225, 252, 0.8) 70%, rgba(210, 195, 245, 0.6));
+  box-shadow:
+    0 26px 40px rgba(130, 100, 210, 0.18),
+    inset 0 -8px 18px rgba(170, 150, 230, 0.25);
+}
+
+.orbs {
+  position: absolute;
+  inset: 0;
+}
+
+.viewer {
+  position: absolute;
+  inset: 4% 18% 12%;
+  z-index: 1;
+}
+
+/* Bright wipe played when the metal finish changes */
+.finishFlash {
+  position: absolute;
+  inset: -10% -20%;
+  pointer-events: none;
+  background: linear-gradient(100deg, transparent 35%, rgba(255, 255, 255, 0.85) 50%, transparent 65%);
+  mix-blend-mode: soft-light;
+  animation: finishWipe 0.9s var(--ease-out) both;
+}
+
+@keyframes finishWipe {
+  from {
+    transform: translateX(-70%);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(70%);
+    opacity: 0;
+  }
+}
+
+.zoomControls {
+  position: absolute;
+  left: 28px;
+  bottom: 28px;
+  z-index: 2;
+  display: grid;
+  gap: 12px;
+}
+
+.zoomControls > * {
+  width: 56px;
+  height: 56px;
+}
+
+.stageChip {
+  position: absolute;
+  bottom: 28px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 56px;
+  padding: 0 26px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 1.1rem;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: var(--shadow-sm);
+}
+
+.dragChip {
+  left: 50%;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.dragChip svg {
+  animation: nudge 2.4s ease-in-out infinite;
+}
+
+@keyframes nudge {
+  0%,
+  100% {
+    transform: translateX(-3px) rotate(-8deg);
+  }
+  50% {
+    transform: translateX(3px) rotate(8deg);
+  }
+}
+
+.tryOn {
+  right: 28px;
+  transition: transform 0.35s var(--ease-spring);
+}
+
+.tryOn:hover {
+  transform: translateY(-3px);
+}
+
+.tryOn:hover svg {
+  animation: spin 1.4s linear infinite;
+}
+
+/* ==========================================================================
+   Info column
+   ========================================================================== */
+
+.info {
+  padding-top: 8px;
+}
+
+.info > * {
+  animation: fadeUp 0.7s var(--ease-out) both;
+}
+
+.info > :nth-child(2) {
+  animation-delay: 0.08s;
+}
+.info > :nth-child(3) {
+  animation-delay: 0.16s;
+}
+.info > :nth-child(4) {
+  animation-delay: 0.24s;
+}
+.info > :nth-child(5) {
+  animation-delay: 0.32s;
+}
+.info > :nth-child(6),
+.info > :nth-child(7) {
+  animation-delay: 0.4s;
+}
+
+.name {
+  font-size: clamp(2.4rem, 4.2vw, 3.6rem);
+  letter-spacing: -0.03em;
+}
+
+.rating {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 14px;
+  font-size: 1.1rem;
+  color: var(--ink-soft);
+}
+
+.stars {
+  display: inline-flex;
+  gap: 2px;
+  color: #f7c046;
+}
+
+.stars svg {
+  animation: pop 0.5s var(--ease-spring) both;
+}
+
+.priceRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 26px;
+}
+
+.price {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 3.2rem;
+  line-height: 1;
+}
+
+.hypo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 22px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #2f9f80;
+  background: var(--mint);
+}
+
+.hypo svg {
+  animation: sway 3s ease-in-out infinite;
+}
+
+.description {
+  margin-top: 24px;
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: var(--ink-soft);
+}
+
+.fieldset {
+  margin: 30px 0 0;
+  padding: 0;
+  border: 0;
+}
+
+.label {
+  display: block;
+  margin-top: 26px;
+  margin-bottom: 14px;
+  padding: 0;
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+
+.fieldset .label {
+  margin-top: 0;
+}
+
+.swatches {
+  display: flex;
+  gap: 28px;
+}
+
+.swatch {
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  font-size: 1.05rem;
+  color: var(--ink-soft);
+  cursor: pointer;
+}
+
+.swatchBall {
+  position: relative;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 3px transparent,
+    0 6px 14px rgba(110, 80, 190, 0.15);
+  transition:
+    transform 0.4s var(--ease-spring),
+    box-shadow 0.3s;
+}
+
+.swatch:hover .swatchBall {
+  transform: translateY(-3px) scale(1.06);
+}
+
+.swatch:has(:focus-visible) .swatchBall {
+  outline: 3px solid var(--purple);
+  outline-offset: 6px;
+}
+
+.swatchActive {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.swatchActive .swatchBall {
+  box-shadow:
+    0 0 0 4px #fff,
+    0 0 0 7px var(--purple),
+    0 8px 18px rgba(110, 80, 190, 0.25);
+  animation: pop 0.45s var(--ease-spring);
+}
+
+.gold {
+  background: radial-gradient(circle at 32% 28%, #fff6cf 0%, #f2cc58 30%, #d9a52d 65%, #b07f17 100%);
+}
+
+.silver {
+  background: radial-gradient(circle at 32% 28%, #ffffff 0%, #e2e4ea 35%, #b9bdc8 70%, #9599a5 100%);
+}
+
+.rose {
+  background: radial-gradient(circle at 32% 28%, #ffe9e1 0%, #efbca9 35%, #d79a86 70%, #bb7a68 100%);
+}
+
+.buyRow {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.addBtn {
+  flex: 1;
+  height: 72px;
+  font-size: 1.45rem;
+}
+
+.addBtn:hover svg {
+  transform: rotate(-10deg) scale(1.1);
+}
+
+.addBtnDone {
+  background: linear-gradient(135deg, #6ad8b8, var(--green));
+  box-shadow: 0 12px 28px rgba(79, 199, 164, 0.4);
+  animation: pop 0.5s var(--ease-spring);
+}
+
+/* ==========================================================================
+   Related
+   ========================================================================== */
+
+.related {
+  margin-top: 48px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+}
+
+.relatedHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 22px;
+}
+
+.relatedHead h2 {
+  font-size: 2rem;
+}
+
+.viewAll {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.viewAll svg {
+  transition: transform 0.35s var(--ease-spring);
+}
+
+.viewAll:hover svg {
+  transform: translateX(6px);
+}
+
+.relatedGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+
+@media (max-width: 1100px) {
+  .top {
+    grid-template-columns: 1fr;
+  }
+
+  .stage {
+    height: 520px;
+  }
+}
+
+@media (max-width: 760px) {
+  .relatedGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .stage {
+    height: 440px;
+  }
+
+  .viewer {
+    inset: 4% 8% 18%;
+  }
+
+  .orbs {
+    opacity: 0.6;
+    transform: scale(0.65);
+  }
+
+  .zoomControls {
+    left: 16px;
+    bottom: auto;
+    top: 16px;
+  }
+
+  .zoomControls > * {
+    width: 46px;
+    height: 46px;
+  }
+
+  .stageChip {
+    bottom: 16px;
+    height: 46px;
+    padding: 0 18px;
+    font-size: 0.95rem;
+  }
+
+  .dragChip {
+    left: 16px;
+    transform: none;
+  }
+
+  .tryOn {
+    right: 16px;
+  }
+
+  .buyRow {
+    flex-wrap: wrap;
+  }
+
+  .addBtn {
+    flex-basis: 100%;
+  }
+
+  .priceRow {
+    flex-wrap: wrap;
+  }
+}

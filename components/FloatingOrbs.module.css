@@ -1,0 +1,82 @@
+.layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.parallax {
+  position: absolute;
+  transform: translate3d(calc(var(--mx, 0) * var(--depth) * 1px), calc(var(--my, 0) * var(--depth) * 1px), 0);
+  transition: transform 0.6s var(--ease-out);
+}
+
+.orb {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  animation: float 7s ease-in-out infinite;
+}
+
+.alt {
+  animation-name: floatAlt;
+  animation-duration: 9s;
+}
+
+.mint {
+  background: radial-gradient(circle at 32% 28%, #ffffff 0%, #c9f3e6 18%, #8fdcc4 55%, #5fbfa4 100%);
+  box-shadow:
+    inset -10px -14px 30px rgba(40, 140, 110, 0.25),
+    0 20px 40px rgba(90, 190, 160, 0.25);
+}
+
+.peach {
+  background: radial-gradient(circle at 32% 28%, #fff6f0 0%, #ffd2bf 22%, #f8a98c 60%, #ec8a72 100%);
+  box-shadow:
+    inset -10px -14px 30px rgba(200, 100, 80, 0.2),
+    0 20px 40px rgba(240, 150, 120, 0.25);
+}
+
+.pink {
+  background: radial-gradient(circle at 32% 28%, #fff 0%, #fbd6e3 25%, #f2a9c2 65%, #e18aab 100%);
+  box-shadow: 0 20px 40px rgba(230, 140, 180, 0.22);
+}
+
+.lilac {
+  background: radial-gradient(circle at 32% 28%, #fff 0%, #e6dbff 25%, #c5b1f5 65%, #a690ea 100%);
+  box-shadow: 0 20px 40px rgba(150, 120, 230, 0.22);
+}
+
+.pearl {
+  background: radial-gradient(circle at 34% 30%, #ffffff 0%, #fbf6f2 30%, #eadfd6 70%, #d6c6bc 100%);
+  box-shadow:
+    inset -6px -8px 16px rgba(150, 120, 110, 0.18),
+    0 14px 26px rgba(150, 120, 140, 0.2);
+}
+
+/* Iridescent soap bubble with a heart floating inside */
+.bubble {
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(circle at 30% 25%, rgba(255, 255, 255, 0.95) 0 6%, transparent 14%),
+    radial-gradient(circle at 50% 50%, transparent 58%, rgba(196, 175, 255, 0.35) 72%, rgba(255, 255, 255, 0.85) 100%),
+    conic-gradient(from 30deg, rgba(255, 200, 230, 0.35), rgba(190, 230, 255, 0.35), rgba(210, 255, 220, 0.3), rgba(255, 230, 190, 0.35), rgba(255, 200, 230, 0.35));
+  box-shadow:
+    inset 0 0 30px rgba(255, 255, 255, 0.7),
+    0 20px 50px rgba(160, 130, 230, 0.2);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  animation-duration: 9s;
+}
+
+.heart {
+  width: 52%;
+  height: 52%;
+  filter: drop-shadow(0 8px 10px rgba(236, 138, 122, 0.35));
+  animation: heartbeat 3s ease-in-out infinite;
+}
+
+.blur {
+  filter: blur(6px);
+  opacity: 0.8;
+}
