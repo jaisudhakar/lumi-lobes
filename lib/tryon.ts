@@ -77,14 +77,19 @@ export function earsFromLandmarks(lm: NormalizedLandmark[], w: number, h: number
   // Where the nose sits between the two face edges: ~0.5 facing the camera.
   const t = ((nose.x - L.x) * across.x + (nose.y - L.y) * across.y) / (width * width);
 
-  const lobe = (edge: { x: number; y: number }, dir: number) => ({
-    x: edge.x + down.x * faceH * 0.13 + (across.x / width) * dir * faceH * 0.015,
-    y: edge.y + down.y * faceH * 0.13 + (across.y / width) * dir * faceH * 0.015,
-  });
+  // When the head turns, the near ear shows further out than the face outline,
+  // so push it outward in proportion to the turn (`near` is 0 when facing the camera).
+  const lobe = (edge: { x: number; y: number }, dir: number, near: number) => {
+    const out = faceH * (0.015 + 0.2 * near);
+    return {
+      x: edge.x + down.x * faceH * 0.11 + (across.x / width) * dir * out,
+      y: edge.y + down.y * faceH * 0.11 + (across.y / width) * dir * out,
+    };
+  };
 
   return [
-    { side: "left", ...lobe(L, -1), faceH, roll, visible: smooth(0.22, 0.38, t) },
-    { side: "right", ...lobe(R, 1), faceH, roll, visible: smooth(0.22, 0.38, 1 - t) },
+    { side: "left", ...lobe(L, -1, Math.max(0, t - 0.5)), faceH, roll, visible: smooth(0.3, 0.42, t) },
+    { side: "right", ...lobe(R, 1, Math.max(0, 0.5 - t)), faceH, roll, visible: smooth(0.3, 0.42, 1 - t) },
   ];
 }
 
@@ -152,7 +157,7 @@ export type DrawSpec = {
 
 /** Draws one earring hanging from an ear. */
 export function drawEarring(ctx: CanvasRenderingContext2D, ear: Ear, spec: DrawSpec, swing: number) {
-  if (ear.visible < 0.02 || !spec.img.complete) return;
+  if (ear.visible < 0.1 || !spec.img.complete) return;
   const h = ear.faceH * STYLE_LENGTH[spec.style] * spec.size;
   const w = h * spec.ratio;
   const angle = ear.roll * (1 - SWINGS[spec.style]) + swing * SWINGS[spec.style];

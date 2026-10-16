@@ -8,23 +8,12 @@ import { METALS, type Metal } from "@/lib/design";
 import { artUri, earringGeometry } from "@/lib/earringArt";
 import { flyToCart, sparkleBurst } from "@/lib/effects";
 import { formatPrice, getProduct, products } from "@/lib/products";
+import { ILLUSTRATED_MODEL, PHOTO_MODEL, type SampleModel } from "@/lib/sampleModels";
 import { drawEarring, earringLength, earsFromLandmarks, loadFaceLandmarker, Pendulum, type DrawSpec, type Ear } from "@/lib/tryon";
 import styles from "./tryon.module.css";
 
 type Source = "sample" | "camera" | "photo";
 type Status = { kind: "idle" | "loading" | "tracking" | "searching" | "error"; text?: string };
-
-/** The illustrated model: ear lobes and face height measured from the SVG. */
-const SAMPLE = {
-  src: "/try-on/sample-model.svg",
-  w: 900,
-  h: 1000,
-  ears: [
-    { side: "left" as const, x: 290, y: 548 },
-    { side: "right" as const, x: 610, y: 548 },
-  ],
-  faceH: 400,
-};
 
 const DEFAULT_SLUG = "pearl-drop-earrings";
 const tryable = products.filter((p) => p.category !== "necklaces");
@@ -38,6 +27,9 @@ export default function TryOnClient() {
   const [status, setStatus] = useState<Status>({ kind: "idle" });
   const [query, setQuery] = useState("");
   const [photoUrl, setPhotoUrl] = useState<string | null>(null);
+  const [photoDims, setPhotoDims] = useState<{ w: number; h: number } | null>(null);
+  const [model, setModel] = useState<SampleModel>(PHOTO_MODEL);
+  const modelRef = useRef<SampleModel>(PHOTO_MODEL);
   const [added, setAdded] = useState(false);
 
   const stageRef = useRef<HTMLDivElement>(null);
@@ -94,8 +86,9 @@ export default function TryOnClient() {
     stopCamera();
     sourceRef.current = "sample";
     setSource("sample");
-    earsRef.current = SAMPLE.ears.map((e) => ({ ...e, faceH: SAMPLE.faceH, roll: 0, visible: 1 }));
-    setStatusBoth({ kind: "idle" });
+    // Pre-measured ears show instantly; otherwise they're detected once the image loads.
+    earsRef.current = modelRef.current.ears ?? null;
+    setStatusBoth(modelRef.current.ears ? { kind: "idle" } : { kind: "loading", text: "Finding the model’s ears…" });
   }, [setStatusBoth]);
 
   const startCamera = async () => {
@@ -151,10 +144,12 @@ export default function TryOnClient() {
     setStatusBoth({ kind: "loading", text: "Loading the face model…" });
   };
 
-  // Detect once the uploaded photo has loaded.
-  const detectPhoto = async () => {
+  // Detect faces in an uploaded photo (or a sample model without pre-measured ears) once it loads.
+  const detectImage = async () => {
     const img = imgRef.current;
-    if (!img || sourceRef.current !== "photo") return;
+    if (!img) return;
+    if (sourceRef.current === "photo") setPhotoDims({ w: img.naturalWidth, h: img.naturalHeight });
+    if (sourceRef.current !== "photo" && !(sourceRef.current === "sample" && !modelRef.current.ears)) return;
     try {
       const lm = await loadFaceLandmarker();
       await lm.setOptions({ runningMode: "IMAGE" });
@@ -194,8 +189,8 @@ export default function TryOnClient() {
       if (!canvas || !spec) return;
       const src = sourceRef.current;
 
-      let w = SAMPLE.w;
-      let h = SAMPLE.h;
+      let w = modelRef.current.w;
+      let h = modelRef.current.h;
       if (src === "camera") {
         const v = videoRef.current;
         if (!v || v.readyState < 2) return;
@@ -291,6 +286,20 @@ export default function TryOnClient() {
 
   const mirrored = source === "camera";
 
+  // If the model photo can't load, fall back to the illustration.
+  const onSampleError = () => {
+    if (modelRef.current === ILLUSTRATED_MODEL) return;
+    modelRef.current = ILLUSTRATED_MODEL;
+    setModel(ILLUSTRATED_MODEL);
+    earsRef.current = ILLUSTRATED_MODEL.ears!;
+  };
+
+  // Match the stage to the picture's shape (the camera uses a fixed 4:3 stage).
+  const dims = source === "sample" ? model : source === "photo" ? photoDims : null;
+  const stageStyle = dims
+    ? { aspectRatio: `${dims.w} / ${dims.h}`, maxWidth: `calc(72vh * ${(dims.w / dims.h).toFixed(4)})` }
+    : undefined;
+
   return (
     <div className={`container page-enter ${styles.page}`}>
       <header className={styles.head}>
@@ -318,11 +327,21 @@ export default function TryOnClient() {
             </label>
           </div>
 
-          <div ref={stageRef} className={`${styles.stage} ${source === "camera" ? styles.stageCamera : ""}`}>
+          <div ref={stageRef} className={`${styles.stage} ${source === "camera" ? styles.stageCamera : ""}`} style={stageStyle}>
             {/* eslint-disable @next/next/no-img-element */}
-            {source === "sample" && <img ref={imgRef} src={SAMPLE.src} alt="Illustrated sample model" className={styles.media} />}
+            {source === "sample" && (
+              <img
+                ref={imgRef}
+                key={model.src}
+                src={model.src}
+                alt={model.alt}
+                className={styles.media}
+                onLoad={detectImage}
+                onError={onSampleError}
+              />
+            )}
             {source === "photo" && photoUrl && (
-              <img ref={imgRef} src={photoUrl} alt="Your photo" className={styles.media} onLoad={detectPhoto} />
+              <img ref={imgRef} src={photoUrl} alt="Your photo" className={styles.media} onLoad={detectImage} />
             )}
             {/* eslint-enable @next/next/no-img-element */}
             <video
@@ -356,6 +375,8 @@ export default function TryOnClient() {
               </svg>
             </button>
           </div>
+
+          {source === "sample" && model.credit && <p className={styles.credit}>{model.credit}</p>}
 
           <div className={styles.controls}>
             <label className={styles.slider}>

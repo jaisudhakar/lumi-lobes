@@ -4,6 +4,7 @@ import Reveal from "@/components/Reveal";
 import { MOODS, STYLES, type Design, type Mood } from "@/lib/design";
 import { artUri, earringGeometry } from "@/lib/earringArt";
 import { products, type Product } from "@/lib/products";
+import { PHOTO_MODEL as MODEL } from "@/lib/sampleModels";
 import { STYLE_LENGTH } from "@/lib/tryon";
 import styles from "./home.module.css";
 
@@ -77,8 +78,11 @@ export function StyleTiles() {
   );
 }
 
-// Ear lobes on the illustrated sample model, as % of the 900×1000 artwork.
-const LOBES = { left: { x: 32.2, y: 54.8 }, right: { x: 67.8, y: 54.8 } };
+// Visible ear lobes on the sample model, as % of the photo, plus face height as % of photo height.
+const LOBES = (MODEL.ears ?? [])
+  .filter((e) => e.visible > 0.5)
+  .map((e) => ({ side: e.side, x: (e.x / MODEL.w) * 100, y: (e.y / MODEL.h) * 100 }));
+const FACE_PCT = ((MODEL.ears?.[0]?.faceH ?? MODEL.h * 0.4) / MODEL.h) * 100;
 const PROMO_DESIGNS: Design[] = [
   { style: "dangle", motif: "butterfly", palette: "lilac" },
   { style: "huggie", motif: "cherry", palette: "ruby" },
@@ -101,37 +105,40 @@ export function TryOnPromo() {
           <CubeIcon size={24} /> Try it on
         </Link>
       </div>
-      <div className={styles.promoStage} aria-hidden>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/try-on/sample-model.svg" alt="" className={styles.promoModel} loading="lazy" />
-        {PROMO_DESIGNS.map((d, i) =>
-          (["left", "right"] as const).map((side) => {
-            const geo = earringGeometry(d.style);
-            // % of model height (the face is ~40% of it), shown a little larger than life so it reads at this size
-            const h = STYLE_LENGTH[d.style] * 40 * 1.7;
-            const w = h * geo.ratio * (1000 / 900); // % of model width
-            const lobe = LOBES[side];
-            return (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                key={`${i}-${side}`}
-                src={artUri(d, { single: true })}
-                alt=""
-                className={`${styles.promoEarring} ${side === "right" ? styles.promoMirror : ""}`}
-                style={{
-                  left: `${lobe.x - geo.anchor.x * w}%`,
-                  top: `${lobe.y - geo.anchor.y * h}%`,
-                  width: `${w}%`,
-                  height: `${h}%`,
-                  transformOrigin: `${geo.anchor.x * 100}% ${geo.anchor.y * 100}%`,
-                  animationDelay: `${i * 3}s, ${side === "right" ? -0.6 : 0}s`,
-                }}
-              />
-            );
-          }),
-        )}
-        <span className={styles.promoScan} />
-      </div>
+      <figure className={styles.promoFigure}>
+        <div className={styles.promoStage} style={{ aspectRatio: `${MODEL.w} / ${MODEL.h}` }} aria-hidden>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={MODEL.src} alt="" className={styles.promoModel} loading="lazy" />
+          {PROMO_DESIGNS.map((d, i) =>
+            LOBES.map((lobe) => {
+              const side = lobe.side;
+              const geo = earringGeometry(d.style);
+              // % of photo height, a touch larger than life so it reads at this size
+              const h = STYLE_LENGTH[d.style] * FACE_PCT * 1.4;
+              const w = h * geo.ratio * (MODEL.h / MODEL.w); // % of photo width
+              return (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  key={`${i}-${side}`}
+                  src={artUri(d, { single: true })}
+                  alt=""
+                  className={`${styles.promoEarring} ${side === "right" ? styles.promoMirror : ""}`}
+                  style={{
+                    left: `${lobe.x - geo.anchor.x * w}%`,
+                    top: `${lobe.y - geo.anchor.y * h}%`,
+                    width: `${w}%`,
+                    height: `${h}%`,
+                    transformOrigin: `${geo.anchor.x * 100}% ${geo.anchor.y * 100}%`,
+                    animationDelay: `${i * 3}s, ${side === "right" ? -0.6 : 0}s`,
+                  }}
+                />
+              );
+            }),
+          )}
+          <span className={styles.promoScan} />
+        </div>
+        {MODEL.credit && <figcaption className={styles.promoCredit}>{MODEL.credit}</figcaption>}
+      </figure>
     </div>
   );
 }

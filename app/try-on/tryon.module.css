@@ -79,6 +79,7 @@
   aspect-ratio: 9 / 10;
   max-height: 72vh;
   width: 100%;
+  margin-inline: auto;
   border-radius: var(--radius-lg);
   overflow: hidden;
   background: linear-gradient(160deg, #f3ecff, #e2d4fb);
@@ -203,6 +204,13 @@
 
 .snap:active {
   transform: scale(0.9);
+}
+
+.credit {
+  margin-top: 10px;
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--muted);
 }
 
 /* ---------- Controls ---------- */
